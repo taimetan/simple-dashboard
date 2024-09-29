@@ -1,17 +1,9 @@
 "use client";
-import React, { useEffect, useState } from "react";
-import { fetchData, deleteUser } from "@/lib/data";
+import React from "react";
+import { deleteUser } from "@/lib/data";
 
-const UserTable = () => {
-  const [currentData, setCurrentData] = useState([]);
-  const getUsers = async () => {
-    const data = await fetchData();
-    setCurrentData(data);
-  };
-  useEffect(() => {
-    getUsers();
-  }, []);
-
+const UserTable = ({ currentData = [] }) => {
+  // Khởi tạo giá trị mặc định là mảng rỗng
   const handleDelete = async (id: string) => {
     const confirmation = window.confirm(
       "Are you sure you want to delete this user?"
@@ -20,9 +12,7 @@ const UserTable = () => {
       await deleteUser(id);
       alert(`User with ID ${id} deleted successfully.`);
 
-      setCurrentData((prevData) =>
-        prevData.filter((user: any) => user.id !== id)
-      );
+      // Chúng ta sẽ không cập nhật currentData ở đây vì nó sẽ được quản lý từ DashboardUI.
     }
   };
 

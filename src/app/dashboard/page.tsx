@@ -46,7 +46,7 @@ const DashboardUI = () => {
     <div className="p-6">
       <Header />
       <Filter filter={filter} setFilter={setFilter} />
-      <UserTable />
+      <UserTable currentData={currentData} />
       <Pagination
         currentPage={currentPage}
         totalPages={totalPages}

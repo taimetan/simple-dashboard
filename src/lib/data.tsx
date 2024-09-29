@@ -1,4 +1,4 @@
-type Users = {
+type User = {
   id: string;
   name: string;
   avatar: string;
@@ -21,6 +21,19 @@ export const deleteUser = async (id: string) => {
     `https://66f90b652a683ce97310bbb9.mockapi.io/api/v1/users/${id}`,
     {
       method: "DELETE",
+    }
+  );
+  return res.json();
+};
+export const updateUser = async (user: User) => {
+  const res = await fetch(
+    `https://66f90b652a683ce97310bbb9.mockapi.io/api/v1/users/${user.id}`,
+    {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(user),
     }
   );
   return res.json();
