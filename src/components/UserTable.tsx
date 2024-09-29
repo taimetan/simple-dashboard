@@ -1,7 +1,11 @@
-import React from "react";
+"use client";
+
+import React, { useState } from "react";
 import { deleteUser } from "@/lib/data";
 
 const UserTable = ({ currentData }: any) => {
+  const [users, setUsers] = useState(currentData);
+
   const handleDelete = async (id: string) => {
     const confirmation = window.confirm(
       "Are you sure you want to delete this user?"
@@ -9,6 +13,7 @@ const UserTable = ({ currentData }: any) => {
     if (confirmation) {
       await deleteUser(id);
       alert(`User with ID ${id} deleted successfully.`);
+      setUsers(users.filter((user: any) => user.id !== id));
     }
   };
 
@@ -44,7 +49,7 @@ const UserTable = ({ currentData }: any) => {
           </tr>
         </thead>
         <tbody>
-          {currentData.map((user: any) => (
+          {users.map((user: any) => (
             <tr key={user.id} className="border-b border-gray-200">
               <td className="py-3 px-4">
                 <img
