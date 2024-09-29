@@ -11,8 +11,6 @@ const UserTable = ({ currentData = [] }) => {
     if (confirmation) {
       await deleteUser(id);
       alert(`User with ID ${id} deleted successfully.`);
-
-      // Chúng ta sẽ không cập nhật currentData ở đây vì nó sẽ được quản lý từ DashboardUI.
     }
   };
 
