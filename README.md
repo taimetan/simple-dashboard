@@ -6,16 +6,15 @@ Bắt Đầu
 
 npm run dev
 
-
-# hoặc
+hoặc
 
 yarn dev
 
-# hoặc
+hoặc
 
 pnpm dev
 
-# hoặc
+hoặc
 
 fontawesome:
 
