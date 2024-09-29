@@ -1,9 +1,18 @@
 "use client";
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { deleteUser } from "@/lib/data";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTrash, faPen } from "@fortawesome/free-solid-svg-icons";
 
 const UserTable = ({ currentData = [] }) => {
   // Khởi tạo giá trị mặc định là mảng rỗng
+  const [users, setUsers] = useState(currentData);
+
+  // Cập nhật danh sách người dùng khi currentData thay đổi
+  useEffect(() => {
+    setUsers(currentData);
+  }, [currentData]);
+
   const handleDelete = async (id: string) => {
     const confirmation = window.confirm(
       "Are you sure you want to delete this user?"
@@ -11,6 +20,8 @@ const UserTable = ({ currentData = [] }) => {
     if (confirmation) {
       await deleteUser(id);
       alert(`User with ID ${id} deleted successfully.`);
+      // Cập nhật lại danh sách người dùng
+      setUsers(users.filter((user: any) => user.id !== id));
     }
   };
 
@@ -46,7 +57,7 @@ const UserTable = ({ currentData = [] }) => {
           </tr>
         </thead>
         <tbody>
-          {currentData.map((user: any) => (
+          {users.map((user: any) => (
             <tr key={user.id} className="border-b border-gray-200">
               <td className="py-3 px-4">
                 <img
@@ -71,13 +82,13 @@ const UserTable = ({ currentData = [] }) => {
               </td>
               <td className="py-3 px-4">
                 <button className="bg-yellow-500 text-white px-3 py-1 rounded mr-2">
-                  Edit
+                  <FontAwesomeIcon icon={faPen} />
                 </button>
                 <button
                   className="bg-red-500 text-white px-3 py-1 rounded"
                   onClick={() => handleDelete(user.id)}
                 >
-                  Delete
+                  <FontAwesomeIcon icon={faTrash} />
                 </button>
               </td>
             </tr>
