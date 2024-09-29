@@ -4,9 +4,8 @@ Dự án này được khởi tạo bằng create-next-app.
 Bắt Đầu
 Để bắt đầu, hãy chạy máy chủ phát triển:
 
-bash
-Sao chép mã
 npm run dev
+
 
 # hoặc
 
