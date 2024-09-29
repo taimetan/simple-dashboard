@@ -14,8 +14,6 @@ hoặc
 
 pnpm dev
 
-hoặc
-
 fontawesome:
 
 npm fortawesome/free-solid-svg-icons
