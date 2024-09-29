@@ -7,16 +7,21 @@ Bắt Đầu
 bash
 Sao chép mã
 npm run dev
-Hoặc bạn có thể sử dụng các lệnh sau:
 
-bash
-Sao chép mã
+# hoặc
+
 yarn dev
-bash
-Sao chép mã
+
+# hoặc
+
 pnpm dev
-Thêm Font Awesome
-Nếu bạn cần sử dụng Font Awesome, hãy cài đặt bằng cách chạy:
+
+# hoặc
+
+fontawesome:
+
+npm fortawesome/free-solid-svg-icons
+npm i @fortawesome/free-solid-svg-icons
 
 bash
 Sao chép mã
