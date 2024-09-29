@@ -1,5 +1,5 @@
 import React from "react";
-import { deleteUser } from "../lib/data"; // Adjust the path as necessary
+import { deleteUser } from "@/lib/data";
 
 const UserTable = ({ currentData }: any) => {
   const handleDelete = async (id: string) => {
@@ -8,9 +8,7 @@ const UserTable = ({ currentData }: any) => {
     );
     if (confirmation) {
       await deleteUser(id);
-      // Optionally, you can refresh the data or remove the user from the list
       alert(`User with ID ${id} deleted successfully.`);
-      // Implement a way to refresh or update the state in the parent component
     }
   };
 
@@ -50,7 +48,7 @@ const UserTable = ({ currentData }: any) => {
             <tr key={user.id} className="border-b border-gray-200">
               <td className="py-3 px-4">
                 <img
-                  src={user.avatar || "https://github.com/shadcn.png"}
+                  src={"https://github.com/shadcn.png"}
                   alt={user.name}
                   className="w-10 h-10 rounded-full object-cover"
                 />
