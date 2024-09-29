@@ -20,7 +20,10 @@ const DashboardUI = () => {
     };
     getData();
   }, []);
-
+  const updateData = async () => {
+    const fetchedData = await fetchData();
+    setData(fetchedData);
+  };
   const totalRows = data.length;
   const totalPages = Math.ceil(totalRows / rowsPerPage);
   const startIndex = (currentPage - 1) * rowsPerPage;
@@ -46,7 +49,7 @@ const DashboardUI = () => {
     <div className="p-6">
       <Header />
       <Filter filter={filter} setFilter={setFilter} />
-      <UserTable currentData={currentData} />
+      <UserTable currentData={currentData} onDataUpdate={updateData} />
       <Pagination
         currentPage={currentPage}
         totalPages={totalPages}

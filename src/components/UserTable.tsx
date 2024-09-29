@@ -1,14 +1,20 @@
+// UserTable.tsx
 "use client";
 import React, { useState, useEffect } from "react";
-import { deleteUser } from "@/lib/data";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTrash, faPen } from "@fortawesome/free-solid-svg-icons";
+import { deleteUser, updateUser } from "@/lib/data";
+import EditUserModal from "./EditUserModal"; // Import the modal
+import type { User } from "@/lib/data"; // Import the User type
+import UserRow from "./UserRow"; // Import UserRow
+import UserTableHeader from "./UserTableHeader"; // Import UserTableHeader
 
-const UserTable = ({ currentData = [] }) => {
-  // Khởi tạo giá trị mặc định là mảng rỗng
-  const [users, setUsers] = useState(currentData);
+const UserTable: React.FC<{
+  currentData: User[];
+  onDataUpdate: () => void;
+}> = ({ currentData, onDataUpdate }) => {
+  const [users, setUsers] = useState<User[]>(currentData);
+  const [selectedUser, setSelectedUser] = useState<User | null>(null);
+  const [isModalOpen, setModalOpen] = useState(false);
 
-  // Cập nhật danh sách người dùng khi currentData thay đổi
   useEffect(() => {
     setUsers(currentData);
   }, [currentData]);
@@ -20,81 +26,46 @@ const UserTable = ({ currentData = [] }) => {
     if (confirmation) {
       await deleteUser(id);
       alert(`User with ID ${id} deleted successfully.`);
-      // Cập nhật lại danh sách người dùng
-      setUsers(users.filter((user: any) => user.id !== id));
+      onDataUpdate(); // Gọi hàm cập nhật dữ liệu
+      setUsers(users.filter((user) => user.id !== id));
     }
+  };
+
+  const handleEdit = (user: User) => {
+    setSelectedUser(user);
+    setModalOpen(true);
+  };
+
+  const handleSave = async (updatedUser: User) => {
+    const response = await updateUser(updatedUser);
+    setUsers(
+      users.map((user) => (user.id === updatedUser.id ? response : user))
+    );
   };
 
   return (
     <div className="overflow-x-auto rounded">
       <table className="min-w-full bg-white border border-gray-200">
-        <thead>
-          <tr className="bg-gray-200">
-            <th className="py-3 px-4 text-left text-sm font-medium text-gray-600">
-              Avatar
-            </th>
-            <th className="py-3 px-4 text-left text-sm font-medium text-gray-600">
-              ID
-            </th>
-            <th className="py-3 px-4 text-left text-sm font-medium text-gray-600">
-              Name
-            </th>
-            <th className="hidden md:table-cell py-3 px-4 text-left text-sm font-medium text-gray-600">
-              Email
-            </th>
-            <th className="hidden lg:table-cell py-3 px-4 text-left text-sm font-medium text-gray-600">
-              Address
-            </th>
-            <th className="hidden lg:table-cell py-3 px-4 text-left text-sm font-medium text-gray-600">
-              Phone
-            </th>
-            <th className="hidden lg:table-cell py-3 px-4 text-left text-sm font-medium text-gray-600">
-              Salary
-            </th>
-            <th className="py-3 px-4 text-left text-sm font-medium text-gray-600">
-              Actions
-            </th>
-          </tr>
-        </thead>
+        <UserTableHeader />
         <tbody>
-          {users.map((user: any) => (
-            <tr key={user.id} className="border-b border-gray-200">
-              <td className="py-3 px-4">
-                <img
-                  src={"https://github.com/shadcn.png"}
-                  alt={user.name}
-                  className="w-10 h-10 rounded-full object-cover"
-                />
-              </td>
-              <td className="py-3 px-4 text-sm text-gray-700">{user.id}</td>
-              <td className="py-3 px-4 text-sm text-gray-700">{user.name}</td>
-              <td className="hidden md:table-cell py-3 px-4 text-sm text-gray-700">
-                {user.email}
-              </td>
-              <td className="hidden lg:table-cell py-3 px-4 text-sm text-gray-700">
-                {user.address}
-              </td>
-              <td className="hidden lg:table-cell py-3 px-4 text-sm text-gray-700">
-                {user.phoneNumber}
-              </td>
-              <td className="hidden lg:table-cell py-3 px-4 text-sm text-gray-700">
-                ${user.salary}
-              </td>
-              <td className="py-3 px-4">
-                <button className="bg-yellow-500 text-white px-3 py-1 rounded mr-2">
-                  <FontAwesomeIcon icon={faPen} />
-                </button>
-                <button
-                  className="bg-red-500 text-white px-3 py-1 rounded"
-                  onClick={() => handleDelete(user.id)}
-                >
-                  <FontAwesomeIcon icon={faTrash} />
-                </button>
-              </td>
-            </tr>
+          {users.map((user) => (
+            <UserRow
+              key={user.id}
+              user={user}
+              onEdit={handleEdit}
+              onDelete={handleDelete}
+            />
           ))}
         </tbody>
       </table>
+
+      {isModalOpen && (
+        <EditUserModal
+          user={selectedUser}
+          onClose={() => setModalOpen(false)}
+          onSave={handleSave}
+        />
+      )}
     </div>
   );
 };
